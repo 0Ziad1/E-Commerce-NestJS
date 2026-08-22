@@ -5,6 +5,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import devConfig from './config/env/dev.config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { CustomerModule } from './modules/customer/customer.module';
 
 
 @Module({
@@ -19,6 +20,7 @@ import { MongooseModule } from '@nestjs/mongoose';
         uri: configService.get("DB_URL.url") as string,
       })
     }),
+    CustomerModule,
     // MongooseModule.forFeature([
     //   {
     //     name: User.name, schema: userSchema, discriminators:

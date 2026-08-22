@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
 @Schema({
-    discriminatorKey: 'userType',
+    discriminatorKey: 'roles',
     timestamps: true,
     toJSON: { virtuals: true }
 })

@@ -4,12 +4,13 @@ import { AuthController } from './auth.controller';
 import { UserMongoModule } from '../../shared/modules/user-mongo.module';
 
 import { AuthFactoryService } from './factory';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [UserMongoModule],
   controllers: [AuthController],
   providers: [AuthService,
-    AuthFactoryService
+    AuthFactoryService, JwtService
   ],
 })
 export class AuthModule { }

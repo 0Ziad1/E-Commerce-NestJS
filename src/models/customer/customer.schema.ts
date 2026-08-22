@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
-@Schema({ discriminatorKey: 'userType', timestamps: true, toJSON: { virtuals: true } })
+@Schema({ discriminatorKey: 'roles', timestamps: true, toJSON: { virtuals: true } })
 export class Customer {
+    email!:string;
     userName!: string;
     password!: string;
     otp!: string;

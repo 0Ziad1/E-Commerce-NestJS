@@ -1,6 +1,6 @@
-import { IsDate, IsEmail, IsString, Length, MaxLength, MinLength } from "class-validator"
+import { IsEmail, IsString, MaxLength, MinLength } from "class-validator"
 import { } from "class-transformer"
-export class RegisterDto {
+export class RegisterDTO {
     @IsString()
     @MinLength(2)
     @MaxLength(20)
