@@ -1,7 +1,7 @@
 
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Roles } from '../decorators';
+import { PUBLIC, Roles } from '../decorators';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -9,11 +9,15 @@ export class RolesGuard implements CanActivate {
     canActivate(
         context: ExecutionContext,
     ): boolean {
-        const roles = this.reflector.get(Roles, context.getHandler());
+        const publicValue = this.reflector.get(PUBLIC, context.getHandler())
+        
+        if (publicValue) return true;
+
+        const roles = this.reflector.getAllAndMerge(Roles, [context.getClass(), context.getHandler()]);
         if (!roles) return true;
         const request = context.switchToHttp().getRequest();
-        const user = request.user;
-        
+
+
         return matchRoles(roles, request.user.roles);
     }
 }

@@ -18,7 +18,6 @@ export class CustomerController {
       message: "Done.",
       success: true,
       data: req.user,
-
     }
 
   }
