@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import devConfig from './config/env/dev.config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CustomerModule } from './modules/customer/customer.module';
+import { CategoryModule } from './modules/category/category.module';
 
 
 @Module({
@@ -21,6 +22,7 @@ import { CustomerModule } from './modules/customer/customer.module';
       })
     }),
     CustomerModule,
+    CategoryModule,
     // MongooseModule.forFeature([
     //   {
     //     name: User.name, schema: userSchema, discriminators:
