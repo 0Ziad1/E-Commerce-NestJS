@@ -2,11 +2,12 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { User } from '../../common/decorators';
+import { Auth, Roles, User } from '../../common/decorators';
 import { CategoryFactoryService } from './factory';
-import { AuthGuard } from '../../common';
+
 
 @Controller('category')
+@Auth(['Admin'])
 export class CategoryController {
   constructor(
     private readonly categoryService: CategoryService,
@@ -14,12 +15,12 @@ export class CategoryController {
   ) { }
 
   @Post()
-  @UseGuards(AuthGuard)
+
   async create(@Body() createCategoryDto: CreateCategoryDto, @User() user: any) {
     const category = this.categoryFactoryService.createCategory(createCategoryDto, user)
-    
+
     const createdCategory = await this.categoryService.create(category);
-     
+
     return {
       message: "Category created successfully",
       succuess: true,
