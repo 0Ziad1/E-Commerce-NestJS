@@ -1,6 +1,7 @@
-import { Prop } from "@nestjs/mongoose";
-import { SchemaTypes, Types } from "mongoose";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Mongoose, SchemaTypes, Types } from "mongoose";
 
+@Schema({ timestamps: true, toJSON: { virtuals: true } })
 export class Category {
     readonly _id!: Types.ObjectId;
     @Prop({ type: String, unique: true, required: true, trim: true })
@@ -14,3 +15,4 @@ export class Category {
     logo!: object;
 
 }
+export const categorySchema = SchemaFactory.createForClass(Category)

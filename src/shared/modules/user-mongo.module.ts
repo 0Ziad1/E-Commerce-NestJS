@@ -3,6 +3,7 @@ import { CustomerRepository } from "../../models/customer/customer.repository";
 import { MongooseModule } from "@nestjs/mongoose";
 import { User, userSchema } from "../../models/common/userSchema";
 import { Customer, customerSchema } from "../../models/customer/customer.schema";
+import { UserRepository } from "../../models";
 
 @Module({
     imports: [MongooseModule.forFeature([
@@ -12,7 +13,13 @@ import { Customer, customerSchema } from "../../models/customer/customer.schema"
                 { name: Customer.name, schema: customerSchema }]
         }
     ])],
-    providers: [CustomerRepository],
-    exports: [CustomerRepository]
+    providers: [
+        CustomerRepository,
+        UserRepository
+    ],
+    exports: [
+        CustomerRepository,
+        UserRepository
+    ]
 })
 export class UserMongoModule { };

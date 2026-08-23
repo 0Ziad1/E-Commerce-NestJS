@@ -1,41 +1,48 @@
 
-import { Injectable, CanActivate, ExecutionContext, NotFoundException } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, NotFoundException, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { CustomerRepository } from '../../models/customer/customer.repository';
 import { Reflector } from '@nestjs/core';
 import { PUBLIC } from '../decorators';
+import { UserRepository } from '../../models';
 @Injectable()
 export class AuthGuard implements CanActivate {
     constructor(
         private readonly jwtService: JwtService,
         private readonly configService: ConfigService,
-        private readonly customerRepository: CustomerRepository,
+        private readonly userRepository: UserRepository,
         private readonly reflector: Reflector
     ) { }
     async canActivate(
         context: ExecutionContext,
     ): Promise<boolean> {
-        const publicValue = this.reflector.get(PUBLIC, context.getHandler())
+        try {
+            const publicValue = this.reflector.get(PUBLIC, context.getHandler())
 
-        if (publicValue) return true;
-        const request = context.switchToHttp().getRequest();
-        const { authorization } = request.headers;
+            if (publicValue) return true;
+            const request = context.switchToHttp().getRequest();
+            const { authorization } = request.headers;
 
-        const payload = this.jwtService.verify<
-            { email: string, id: string }
-        >
-            (
-                authorization,
-                { secret: this.configService.get('access').secure }
-            )
+            const payload = this.jwtService.verify<
+                { email: string, id: string }
+            >
+                (
+                    authorization,
+                    { secret: this.configService.get('access').secure }
+                )
 
-        const customerExistance = await this.customerRepository.getOne({ _id: payload.id })
+            const userExistance = await this.userRepository.getOne({ _id: payload.id })
 
-        if (!customerExistance) throw new NotFoundException('User not found');
-        request.user = customerExistance;
+            if (!userExistance) throw new NotFoundException('User not found');
+            request.user = userExistance;
 
-        return true;
+            return true;
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new UnauthorizedException(error.message);
+            }
+            throw new UnauthorizedException('Something went wrong');
+        }
     }
 
 }

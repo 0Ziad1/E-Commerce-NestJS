@@ -3,3 +3,6 @@ export * from "./customer/customer.schema"
 
 export * from "./category/category.repository"
 export * from "./category/category.schema"
+
+export * from "./common/userSchema"
+export * from "./common/userRepository"
