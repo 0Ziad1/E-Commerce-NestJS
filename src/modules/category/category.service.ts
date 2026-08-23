@@ -13,7 +13,7 @@ export class CategoryService {
     const categoryExistance = await this.categoryRepository.getOne({ slug: category.slug });
     if (categoryExistance) throw new ConflictException("Category already exist");
 
-    
+
     return await this.categoryRepository.create(category);
   }
 
@@ -25,8 +25,10 @@ export class CategoryService {
     return `This action returns a #${id} category`;
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: string, category: Category) {
+    const categoryExistance = await this.categoryRepository.getOne({ slug: category.slug });
+    if (categoryExistance) throw new ConflictException("Category already exist");
+    return await this.categoryRepository.update({ _id: id }, category)
   }
 
   remove(id: number) {
