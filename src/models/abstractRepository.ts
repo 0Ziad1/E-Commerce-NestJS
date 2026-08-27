@@ -40,4 +40,11 @@ export class AbstractRepository<T> {
         runValidators: true
       });
   }
+  async find(
+    filter: QueryFilter<T>,
+    projection?: ProjectionType<T>,
+    options?: QueryOptions<T>,
+  ) {
+    return await this.model.find(filter,projection,options);
+  }
 }

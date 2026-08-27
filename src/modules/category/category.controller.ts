@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Put } fro
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { Auth, Roles, User } from '../../common/decorators';
+import { Auth, Public, Roles, User } from '../../common/decorators';
 import { CategoryFactoryService } from './factory';
 
 
@@ -31,13 +31,31 @@ export class CategoryController {
 
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
-    const category = await this.categoryFactoryService.updateCategory(id, updateCategoryDto);
+  async update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto, @User() user: any) {
+    const category = await this.categoryFactoryService.updateCategory(id, updateCategoryDto, user);
     const newCategory = await this.categoryService.update(id, category);
     return {
       message: "Category updated successfully",
       success: "true",
       data: newCategory,
+    }
+  }
+  @Public()
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    const category = await this.categoryService.findOne(id);
+    return {
+      success: true,
+      data: category,
+    }
+  }
+  @Public()
+  @Get()
+  async findAll() {
+    const categories = await this.categoryService.findAll();
+    return {
+      success: true,
+      data: categories,
     }
   }
 

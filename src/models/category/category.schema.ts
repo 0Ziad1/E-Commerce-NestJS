@@ -10,7 +10,8 @@ export class Category {
     name!: string;
     @Prop({ type: SchemaTypes.ObjectId, ref: "Admin", required: true })
     createdBy!: Types.ObjectId;
-
+    @Prop({ type: SchemaTypes.ObjectId, ref: "Admin", required: true })
+    updatedBy!: Types.ObjectId;
     //to do
     logo!: object;
 

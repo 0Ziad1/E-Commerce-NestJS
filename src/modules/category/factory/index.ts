@@ -10,6 +10,7 @@ export class CategoryFactoryService {
     createCategory(createCategoryDto: CreateCategoryDto, user: any) {
         const category = new Category();
         category.createdBy = user._id;
+        category.updatedBy = user._id;
         category.logo = createCategoryDto.logo;
         category.name = createCategoryDto.name;
         category.slug = slugify(createCategoryDto.name, {
@@ -19,7 +20,7 @@ export class CategoryFactoryService {
         })
         return category;
     }
-    async updateCategory(id: string, updateCategoryDto: UpdateCategoryDto) {
+    async updateCategory(id: string, updateCategoryDto: UpdateCategoryDto, user: any) {
 
         const oldCategory = await this.categoryRepository.getOne({ _id: id });
 
@@ -27,6 +28,7 @@ export class CategoryFactoryService {
         const category = new Category();
         category.name = updateCategoryDto?.name || oldCategory.name;
         category.logo = updateCategoryDto?.logo || oldCategory.logo;
+        category.updatedBy = user._id;
         category.slug = slugify(category.name, {
             replacement: "-",
             lower: true,

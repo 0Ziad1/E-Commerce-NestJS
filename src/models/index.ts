@@ -6,3 +6,5 @@ export * from "./category/category.schema"
 
 export * from "./common/userSchema"
 export * from "./common/userRepository"
+
+export * from "./admin/admin.schema"

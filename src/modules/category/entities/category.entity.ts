@@ -5,7 +5,7 @@ export class Category {
     slug!: string;
     name!: string;
     createdBy!: Types.ObjectId;
-
+    updatedBy!: Types.ObjectId;
     //to do
     logo!: Object;
 }

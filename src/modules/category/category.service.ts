@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
@@ -17,16 +17,36 @@ export class CategoryService {
     return await this.categoryRepository.create(category);
   }
 
-  findAll() {
-    return `This action returns all category`;
+  async findAll(page: number = 1, limit: number = 10) {
+    const skip = (page - 1) * limit;
+
+    const categories = await this.categoryRepository.find(
+      {},
+      {},
+      {
+        limit,
+        skip,
+      },
+    );
+
+    return categories;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(id: string) {
+    const categoryData = await this.categoryRepository.getOne(
+      { _id: id },
+      {},
+      {
+        populate: [
+          { path: 'createdBy' }
+          , { path: 'updatedBy' }]
+      });
+    if (!categoryData) throw new NotFoundException('Category not found');
+    return categoryData;
   }
 
   async update(id: string, category: Category) {
-    const categoryExistance = await this.categoryRepository.getOne({ slug: category.slug });
+    const categoryExistance = await this.categoryRepository.getOne({ slug: category.slug, _id: { $ne: id } });
     if (categoryExistance) throw new ConflictException("Category already exist");
     return await this.categoryRepository.update({ _id: id }, category)
   }
