@@ -3,6 +3,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 import { CategoryRepository } from '../../models';
+import { ObjectId, Types } from 'mongoose';
 
 @Injectable()
 export class CategoryService {
@@ -32,7 +33,7 @@ export class CategoryService {
     return categories;
   }
 
-  async findOne(id: string) {
+  async findOne(id: string|Types.ObjectId) {
     const categoryData = await this.categoryRepository.getOne(
       { _id: id },
       {},

@@ -13,5 +13,6 @@ import { JwtService } from '@nestjs/jwt';
   ]), UserMongoModule],
   controllers: [CategoryController],
   providers: [CategoryService, CategoryFactoryService, CategoryRepository,JwtService],
+  exports:[CategoryService, CategoryFactoryService, CategoryRepository,JwtService]
 })
 export class CategoryModule { }

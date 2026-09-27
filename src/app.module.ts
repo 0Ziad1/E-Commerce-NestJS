@@ -7,6 +7,9 @@ import devConfig from './config/env/dev.config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CustomerModule } from './modules/customer/customer.module';
 import { CategoryModule } from './modules/category/category.module';
+import { BrandModule } from './modules/brand/brand.module';
+import { CommanModule } from './shared/modules/common.module';
+import { ProductModule } from './modules/product/product.module';
 
 
 @Module({
@@ -23,6 +26,9 @@ import { CategoryModule } from './modules/category/category.module';
     }),
     CustomerModule,
     CategoryModule,
+    BrandModule,
+    CommanModule,
+    ProductModule
     // MongooseModule.forFeature([
     //   {
     //     name: User.name, schema: userSchema, discriminators:
