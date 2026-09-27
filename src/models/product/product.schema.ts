@@ -37,14 +37,14 @@ export class Product {
             return this.price - (this.price * (this.discountAmount / 100))
         }
     })
-    finalPrice!: Number  //virtual 
+    finalPrice!: number  //virtual 
     @Prop({ type: Number, min: 0, default: 1 })
-    stock!: Number
+    stock!: number
     @Prop({ type: Number, min: 0 })
-    sold!: Number
+    sold!: number
     @Prop({ type: [String] })
     colors!: string[]
     @Prop({ type: [String] })
-    size!: string[]
+    sizes!: string[]
 }
 export const productSchema = SchemaFactory.createForClass(Product)

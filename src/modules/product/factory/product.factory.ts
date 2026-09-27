@@ -14,7 +14,7 @@ export class ProductFactoryService {
         product.discountType = createProductDto.discountType;
         product.name = createProductDto.name;
         product.price = createProductDto.price;
-        product.size = createProductDto.size;
+        product.sizes = createProductDto.sizes;
         product.sold = 0;
         product.slug = slugify(createProductDto.name);
         return product;

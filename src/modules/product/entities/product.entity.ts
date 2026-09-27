@@ -13,9 +13,9 @@ export class Product {
     price!: number
     discountAmount!: number
     discountType!: DiscountType
-    finalPrice!: Number  //virtual 
-    stock!: Number
-    sold!: Number
+    finalPrice!: number  //virtual 
+    stock!: number
+    sold!: number
     colors!: string[]
-    size!: string[]
+    sizes!: string[]
 }

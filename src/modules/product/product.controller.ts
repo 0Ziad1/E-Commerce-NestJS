@@ -7,6 +7,8 @@ import { Auth, User } from '../../common/decorators';
 import { CategoryService } from '../category/category.service';
 import { BrandService } from '../brand/brand.service';
 import { MESSAGE } from '../../common';
+import { Product } from './entities/product.entity';
+import { Types } from 'mongoose';
 
 @Controller('product')
 @Auth(["Admin", "Seller"])
@@ -14,16 +16,12 @@ export class ProductController {
   constructor(
     private readonly productService: ProductService,
     private readonly productFactoryService: ProductFactoryService,
-    private readonly categoryService: CategoryService,
-    private readonly brandService: BrandService
   ) { }
 
   @Post()
   async create(@Body() createProductDto: CreateProductDto, @User() user: any) {
     const product = this.productFactoryService.createProduct(createProductDto, user);
-    await this.categoryService.findOne(product.categoryId);
-    await this.brandService.findOne(product.brandId)
-    const createdProduct = await this.productService.create(product);
+    const createdProduct = await this.productService.create(product, user);
     return {
       success: true,
       data: createdProduct,
@@ -42,8 +40,8 @@ export class ProductController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productService.update(+id, updateProductDto);
+  async update(@Param('id') id: string | Types.ObjectId, @Body() product: Product) {
+    return await this.productService.update(id, product);
   }
 
   @Delete(':id')

@@ -36,7 +36,7 @@ export class CreateProductDto {
 
     @IsNumber()
     @IsOptional()
-    stock!: Number
+    stock!: number
 
     @IsArray()
     @IsString({ each: true })
@@ -44,5 +44,5 @@ export class CreateProductDto {
 
     @IsArray()
     @IsString({ each: true })
-    size!: string[]
+    sizes!: string[]
 }
