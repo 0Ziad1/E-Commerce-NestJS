@@ -6,6 +6,7 @@ import { CategoryService } from '../category/category.service';
 import { BrandService } from '../brand/brand.service';
 import { Types } from 'mongoose';
 import { MESSAGE } from '../../common';
+import { Public } from '../../common/decorators';
 
 @Injectable()
 export class ProductService {
@@ -33,32 +34,35 @@ export class ProductService {
   findAll() {
     return `This action returns all product`;
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  @Public()
+  async findOne(id: string | Types.ObjectId) {
+    const productExist = await this.productRepository.getOne({ _id: id });
+    if (!productExist) throw new NotFoundException(MESSAGE.Product.notFound);
+    return productExist;
   }
 
   async update(id: string | Types.ObjectId, product: Product) {
-    const productExistance = await this.productRepository.getOne({ _id: id });
-    if (!productExistance) throw new NotFoundException(MESSAGE.Product.notFound);
+    const productExistance = await this.findOne(id);
     if (product.stock !== undefined) {
       product.stock += productExistance.stock;
     }
-    const colors = new Set<string>(productExistance.colors);
-    for (const color of product.colors) {
-      colors.add(color);
-    }
+    const colors = this.convertToSet(productExistance.colors, product.colors)
     product.colors = Array.from(colors);
 
-    const sizes = new Set<string>(productExistance.sizes);
-    for (const size of product.sizes) {
-      sizes.add(size);
-    }
+    const sizes = this.convertToSet(productExistance.sizes, product.sizes)
     product.sizes = Array.from(sizes);
     return await this.productRepository.update({ _id: id }, product, { new: true })
   }
 
   remove(id: number) {
     return `This action removes a #${id} product`;
+  }
+
+  convertToSet(oldData: string[], newData: string[]) {
+    const items = new Set<string>(oldData);
+    for (const item of newData) {
+      items.add(item);
+    }
+    return items;
   }
 }
